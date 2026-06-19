@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechVerse - Berita Teknologi Masa Kini</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome untuk Ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Efek Hover Kustom untuk Kartu Berita */
+    .news-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .news-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px -5px rgba(6, 182, 212, 0.15);
+    }
+
+    /* Kustomisasi transisi zoom pada gambar */
+    .image-zoom {
+      overflow: hidden;
+    }
+    .image-zoom img {
+      transition: transform 0.5s ease;
+    }
+    .image-zoom:hover img {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col">
+
+  <!-- NAVIGATION BAR -->
+  <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-bolt text-cyan-400 text-2xl animate-pulse"></i>
+        <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">TECHVERSE</span>
+      </div>
+
+      <!-- Menu Navigasi / Filter Kategori -->
+      <div class="hidden md:flex space-x-4" id="category-menu">
+        <button onclick="filterBerita('Semua')" class="px-3 py-2 rounded-md text-sm font-medium bg-cyan-500 text-gray-900 shadow-sm transition">Semua</button>
+        <button onclick="filterBerita('AI & Robots')" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition">AI & Robots</button>
+        <button onclick="filterBerita('Gadget')" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition">Gadget</button>
+        <button onclick="filterBerita('Cybersecurity')" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition">Cybersecurity</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- JUMBOTRON / HIGHLIGHT BERITA UTAMA -->
+    <section id="hero-section" class="mb-12 bg-gradient-to-br from-gray-800 to-gray-850 rounded-2xl border border-gray-700 overflow-hidden shadow-xl grid md:grid-cols-2 gap-6 items-center">
+        <div class="h-64 md:h-full w-full bg-cover bg-center min-h-[300px]" style="background-image:url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=60');"></div>
+            <div class="p-6 md:p-8 space-y-4">
+                <span class="inline-block bg-cyan-500/10 text-cyan-400 text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wider border border-cyan-500/20">Headline Utama</span>
+                <h1 class="text-2xl md:text-4xl font-bold leading-tight hover:text-cyan-400 transition cursor-pointer">Menjelajahi Era Web 3.0 dan Masa Depan Artificial Intelligence di Tahun 2026</h1>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed">Perkembangan teknologi kecerdasan buatan melesat jauh lebih cepat dari prediksi manusia. Bagaimana dampaknya terhadap dunia industri kreatif dan jaringan global saat ini?</p>
+             <div class="text-xs text-gray-500 flex items-center space-x-2">
+                <span>Oleh Redaksi</span>
+                <span>●</span>
+                <span>Juni 2026</span>
+             </div>
+             </div>
+    </section>
+
+    <!-- GRID BERITA UTAMA -->
+    <section class="space-y-6">
+      <div class="flex items-center justify-between border-b border-gray-700 pb-3">
+        <h2 class="text-xl font-bold flex items-center gap-2">
+          <i class="fa-solid fa-newspaper text-cyan-400"></i> Berita Terkini (<span id="category-title">Semua</span>)
+        </h2>
+      </div>
+
+      <!-- Kontainer Kartu Berita -->
+      <div id="news-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Data berita di-render di sini oleh JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER (muhammad ibnu subandi) -->
+  <footer class="bg-gray-900 border-t border-gray-800 text-gray-500 text-sm py-6 mt-12 text-center">
+    <!-- Murid tinggal mengganti teks di dalam tag span ini dengan nama mereka -->
+    <p>&copy; 2026 TechVerse - Dibuat oleh: <span class="text-cyan-400 font-semibold">Muhammad Ibnu Subandi XI TJKT</span></p>
+    <p class="text-xs text-gray-600 mt-1">Ujian Praktik Kejuruan SMK Al-Muhajirin</p>
+  </footer>
+
+  <!-- LOGIKA JAVASCRIPT DINAMIS -->
+  <script>
+    // DATASET BERITA
+     const dataBerita = [
+      {
+        id: 1,
+        judul: "Model AI Terbaru 2026 Mampu Memahami Konteks Emosi Manusia",
+        kategori: "AI & Robots",
+        deskripsi: "Generasi baru kecerdasan buatan kini tidak hanya memproses teks, melainkan mampu membaca intonasi suara dan ekspresi mikro wajah pengguna secara real-time.",
+        gambar: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&auto=format&fit=crop&q=60",
+        waktu: "10 Menit yang lalu"
+      },
+      {
+        id: 2,
+        judul: "Smartphone Lipat Tiga (tri-fold) Mulai Menjadi Tren Global Baru",
+        kategori: "gadget",
+        deskripsi: "Produsen gadget berlomba-lomba merilis desain layar lipat tiga yg tipis, memberikan pengalaman tablet portable di dalam kantong celana anda ",
+        gambar: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=60",
+        waktu: "2 Jam yang lalu"
+      },
+      {
+        id: 3,
+        judul: "Serangan Ransomware Skala Besar Berhasil Dilumpuhkan Jaringan Keamanan",
+        kategori: "Cybersecurity",
+        deskripsi: "Kolaborasi global tim ahli jaringan berhasil memblokir serangan cyber berbahaya yang menargetkan infrastruktur cloud publik di Asia Tenggara.",
+        gambar: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=60",
+        waktu: "1 Hari yang lalu"
+      },
+      {
+        id: 4,
+        judul: "Robot Humanoid Mulai Dipekerjakan di Gudang Logistik Otomatis",
+        kategori: "AI & Robots",
+        deskripsi: "Uji coba skala industri menunjukkan robot humanoid mampu menghemat waktu pemindahan barang hingga 40% dengan tingkat error mendekati nol.",
+        gambar: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&auto=format&fit=crop&q=60",
+        waktu: "2 Hari yang lalu"
+      },
+      {
+        id: 5,
+        judul: "Teknologi Enkripsi Kuantum Diklaim Mustahil Ditembus Hacker",
+        kategori: "Cybersecurity",
+        deskripsi: "Standardisasi baru sistem keamanan siber berbasis kriptografi kuantum resmi diluncurkan untuk melindungi data transaksi perbankan digital.",
+        gambar: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&auto=format&fit=crop&q=60",
+        waktu: "3 Hari yang lalu"
+      }
+    ];
+
+    // FUNGSI RENDER KARTU BERITA
+    function renderBerita(beritaDisaring) {
+      const container = document.getElementById("news-container");
+      container.innerHTML = "";
+
+      if(beritaDisaring.length === 0) {
+        container.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">Tidak ada berita dalam kategori ini.</p>`;
+        return;
+      }
+
+      beritaDisaring.forEach(berita => {
+        const cardHTML = `
+          <article class="news-card bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col shadow-md">
+            <div class="image-zoom h-48 w-full bg-gray-700">
+              <img src="${berita.gambar}" alt="${berita.judul}" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <span class="inline-block bg-cyan-500/10 text-cyan-400 text-xs px-2.5 py-0.5 rounded-full font-medium border border-cyan-500/20">${berita.kategori}</span>
+                <h3 class="text-lg font-bold line-clamp-2 hover:text-cyan-400 transition cursor-pointer">${berita.judul}</h3>
+                <p class="text-gray-400 text-sm line-clamp-3">${berita.deskripsi}</p>
+              </div>
+              <div class="text-xs text-gray-500 flex items-center justify-between pt-2 border-t border-gray-700/50">
+                <span><i class="fa-regular fa-clock mr-1"></i> ${berita.waktu}</span>
+                <span class="text-cyan-400 hover:underline cursor-pointer">Baca Selengkapnya →</span>
+              </div>
+            </div>
+          </article>
+        `;
+        container.innerHTML += cardHTML;
+      });
+    }
+
+    // FUNGSI FILTER KATEGORI
+    function filterBerita(kategori) {
+      document.getElementById("category-title").innerText = kategori;
+
+      if (kategori === "Semua") {
+        renderBerita(dataBerita);
+      } else {
+        const hasilFilter = dataBerita.filter(berita => berita.kategori === kategori);
+        renderBerita(hasilFilter);
+      }
+
+      // Atur style tombol navigasi yang aktif
+      const tombolNavigasi = document.querySelectorAll("#category-menu button");
+      tombolNavigasi.forEach(tombol => {
+        if(tombol.innerText === kategori) {
+          tombol.className = "px-3 py-2 rounded-md text-sm font-medium bg-cyan-500 text-gray-900 shadow-sm transition";
+        } else {
+          tombol.className = "px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition";
+        }
+      });
+    }
+
+    // LOAD PERTAMA KALI
+    document.addEventListener("DOMContentLoaded", () => {
+      renderBerita(dataBerita);
+    });
+  </script>
+</body>
+</html>
